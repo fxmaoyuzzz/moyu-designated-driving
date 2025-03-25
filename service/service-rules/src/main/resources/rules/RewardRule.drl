@@ -1,0 +1,39 @@
+//package对应的不一定是真正的目录，可以任意写com.abc，同一个包下的drl文件可以相互访问
+package  com.moyu.daijia
+
+import rules.form.com.moyu.daijia.model.RewardRuleRequest;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+global rules.vo.com.moyu.daijia.model.RewardRuleResponse rewardRuleResponse;
+
+/**
+系统奖励
+    00:00:00-06:59:59  完成5单后 每单奖励5元
+    07:00:00-23:59:59  完成10单后 每单奖励2元
+*/
+rule "00:00:00-06:59:59  完成5单后 每单奖励5元"
+    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
+    no-loop true         //防止陷入死循环
+    when
+        /*规则条件，到工作内存中查找FeeRuleRequest对象
+        里面出来的结果只能是ture或者false
+        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
+        $rule:RewardRuleRequest(startTime >= "00:00:00" && startTime <= "06:59:59" && orderNum > 5)
+    then
+        rewardRuleResponse.setRewardAmount(new BigDecimal("5.0"));
+        System.out.println("00:00:00-06:59:59 奖励：" + rewardRuleResponse.getRewardAmount() + "元");
+end
+rule "07:00:00-23:59:59  完成10单后 每单奖励2元"
+    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
+    no-loop true         //防止陷入死循环
+    when
+        /*规则条件，到工作内存中查找FeeRuleRequest对象
+        里面出来的结果只能是ture或者false
+        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
+        $rule:RewardRuleRequest(startTime >= "07:00:00" && startTime <= "23:59:59" && orderNum > 10)
+    then
+        rewardRuleResponse.setRewardAmount(new BigDecimal("2.0"));
+        System.out.println("00:00:00-06:59:59 奖励：" + rewardRuleResponse.getRewardAmount() + "元");
+end
+

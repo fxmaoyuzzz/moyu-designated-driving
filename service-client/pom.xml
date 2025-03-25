@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.moyu.daijia</groupId>
+        <artifactId>daijia-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <modules>
+        <module>service-coupon-client</module>
+        <module>service-customer-client</module>
+        <module>service-driver-client</module>
+        <module>service-order-client</module>
+        <module>service-system-client</module>
+        <module>service-map-client</module>
+        <module>service-rules-client</module>
+        <module>service-dispatch-client</module>
+        <module>service-payment-client</module>
+    </modules>
+
+    <artifactId>service-client</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.moyu.daijia</groupId>
+            <artifactId>common-util</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.moyu.daijia</groupId>
+            <artifactId>model</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 服务调用feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>

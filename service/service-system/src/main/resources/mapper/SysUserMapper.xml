@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="com.moyu.daijia.system.mapper.SysUserMapper">
+
+    <resultMap id="SysUserMap" type="com.moyu.daijia.model.entity.system.SysUser">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="headUrl" column="head_url"/>
+        <result property="postId" column="post_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="postName" column="post_name"/>
+        <result property="deptName" column="dept_name"/>
+        <collection property="roleList" ofType="com.moyu.daijia.model.entity.system.SysRole">
+            <result property="id" column="role_id"/>
+            <result property="roleName" column="role_name"/>
+            <result property="roleCode" column="role_code"/>
+        </collection>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columns">
+		id,username,password,name,phone,head_url,post_id,dept_id,description,status,create_time,update_time,is_deleted
+	</sql>
+
+    <select id="selectPage" resultMap="SysUserMap">
+        select
+        u.id,u.username,u.password,u.name,u.phone,u.head_url,u.post_id,u.dept_id,u.description,u.status,u.create_time,u.update_time,u.is_deleted,
+        r.id as role_id,r.role_name,r.role_code,
+        p.name as post_name,
+        d.name as dept_name
+        from sys_user u
+        left join sys_user_role ar on ar.user_id = u.id and ar.is_deleted = 0
+        left join sys_role r on ar.role_id = r.id and r.is_deleted = 0
+        left join sys_post p on p.id = u.post_id and p.is_deleted = 0
+        left join sys_dept d on d.id = u.dept_id and d.is_deleted = 0
+        <where>
+            <if test="query.keyword != null and query.keyword != ''">
+                and (u.username like CONCAT('%',#{query.keyword},'%') or  u.name like CONCAT('%',#{query.keyword},'%') or u.phone like CONCAT('%',#{query.keyword},'%'))
+            </if>
+            <if test="query.createTimeBegin != null and query.createTimeBegin != ''">
+                and u.create_time >= #{query.createTimeBegin}
+            </if>
+            <if test="query.createTimeEnd != null and query.createTimeEnd != ''">
+                and u.create_time &lt;= #{query.createTimeEnd}
+            </if>
+            <if test="query.roleId != null">
+                and r.id = #{query.roleId}
+            </if>
+            <if test="query.postId != null">
+                and u.post_id = #{query.postId}
+            </if>
+            <if test="query.deptId != null">
+                and (d.tree_path like CONCAT('%,',#{query.deptId},',%') or d.id = #{query.deptId})
+            </if>
+            and u.is_deleted = 0
+        </where>
+        order by u.id desc
+    </select>
+
+</mapper>
+

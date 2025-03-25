@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="com.moyu.daijia.system.mapper.SysMenuMapper">
+
+	<resultMap id="sysMenuMap" type="com.moyu.daijia.model.entity.system.SysMenu" autoMapping="true">
+	</resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+		m.id,m.parent_id,m.name,m.type,m.path,m.component,m.perms,m.icon,m.sort_value,m.active_menu,m.is_hide,m.status,m.create_time,m.update_time,m.is_deleted
+	</sql>
+
+
+    <select id="findListByUserId" resultMap="sysMenuMap">
+		select
+		distinct <include refid="columns" />
+		from sys_menu m
+		inner join sys_role_menu rm on rm.menu_id = m.id
+		inner join sys_user_role ur on ur.role_id = rm.role_id
+		where
+		ur.user_id = #{userId}
+		and m.status = 1
+		and rm.is_deleted = 0
+		and ur.is_deleted = 0
+		and m.is_deleted = 0
+	</select>
+
+</mapper>
+

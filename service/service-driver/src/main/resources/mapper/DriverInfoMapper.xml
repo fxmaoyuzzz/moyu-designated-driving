@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="com.moyu.daijia.driver.mapper.DriverInfoMapper">
+
+	<resultMap id="driverInfoMap" type="com.moyu.daijia.model.entity.driver.DriverInfo" autoMapping="true">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+		id,wx_open_id,nickname,avatar_url,phone,name,gender,birthday,idcard_no,idcard_address,idcard_expire,idcard_front_url,idcard_back_url,idcard_hand_url,driver_license_class,driver_license_no,driver_license_expire,driver_license_issue_date,driver_license_front_url,driver_license_back_url,driver_license_hand_url,contact_name,contact_phone,contact_relationship,face_model_id,job_no,score,order_count,auth_status,status,create_time,update_time,is_deleted
+	</sql>
+	
+</mapper>
+
