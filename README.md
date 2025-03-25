@@ -1,8 +1,8 @@
 # moyu-designated-driving
-代驾项目
+## **代驾项目**
 
 
-![](C:\Users\fxmao\Desktop\代驾项目架构图.png)
+![](doc/代驾项目架构图.png)
 
 | 技术栈 | 版本  |
 |----|:----|
