@@ -1,6 +1,7 @@
 package com.moyu.daijia.driver.service;
 
 import com.moyu.daijia.model.entity.driver.DriverInfo;
+import com.moyu.daijia.model.entity.driver.DriverSet;
 import com.moyu.daijia.model.form.driver.DriverFaceModelForm;
 import com.moyu.daijia.model.form.driver.UpdateDriverAuthInfoForm;
 import com.moyu.daijia.model.vo.driver.DriverAuthInfoVo;
@@ -48,4 +49,37 @@ public interface DriverInfoService extends IService<DriverInfo> {
      * @return
      */
     Boolean creatDriverFaceModel(DriverFaceModelForm driverFaceModelForm);
+
+    /**
+     * 获取司机设置信息
+     *
+     * @param driverId
+     * @return
+     */
+    DriverSet getDriverSet(Long driverId);
+
+    /**
+     * 判断司机当日是否进行过人脸识别
+     *
+     * @param driverId
+     * @return
+     */
+    Boolean isFaceRecognition(Long driverId);
+
+    /**
+     * 验证司机人脸
+     *
+     * @param driverFaceModelForm
+     * @return
+     */
+    Boolean verifyDriverFace(DriverFaceModelForm driverFaceModelForm);
+
+    /**
+     * 更新司机接单状态
+     *
+     * @param driverId
+     * @param status
+     * @return
+     */
+    Boolean updateServiceStatus(Long driverId, Integer status);
 }

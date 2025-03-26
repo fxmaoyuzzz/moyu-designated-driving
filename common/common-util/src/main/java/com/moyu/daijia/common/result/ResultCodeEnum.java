@@ -34,8 +34,11 @@ public enum ResultCodeEnum {
 
     COB_NEW_ORDER_FAIL( 217, "抢单失败"),
     MAP_FAIL( 217, "地图服务调用失败"),
+    MAP_SUCCESS( 0, "地图服务调用成功"),
     PROFITSHARING_FAIL( 217, "分账调用失败"),
     NO_START_SERVICE( 217, "未开启代驾服务，不能更新位置信息"),
+    DRIVER_SERVICE_OPEN( 1, "司机代驾服务状态开启"),
+    DRIVER_SERVICE_SHUTDOWN( 0, "司机代驾服务状态关闭"),
     DRIVER_START_LOCATION_DISTION_ERROR( 217, "距离代驾起始点1公里以内才能确认"),
     DRIVER_END_LOCATION_DISTION_ERROR( 217, "距离代驾终点2公里以内才能确认"),
     IMAGE_AUDITION_FAIL( 217, "图片审核不通过"),

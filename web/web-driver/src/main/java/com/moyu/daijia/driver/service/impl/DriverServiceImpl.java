@@ -6,8 +6,10 @@ import com.moyu.daijia.common.execption.MoyuException;
 import com.moyu.daijia.common.result.Result;
 import com.moyu.daijia.common.result.ResultCodeEnum;
 import com.moyu.daijia.common.util.AuthContextHolder;
+import com.moyu.daijia.dispatch.client.NewOrderFeignClient;
 import com.moyu.daijia.driver.client.DriverInfoFeignClient;
 import com.moyu.daijia.driver.service.DriverService;
+import com.moyu.daijia.map.client.LocationFeignClient;
 import com.moyu.daijia.model.form.driver.DriverFaceModelForm;
 import com.moyu.daijia.model.form.driver.UpdateDriverAuthInfoForm;
 import com.moyu.daijia.model.vo.driver.DriverAuthInfoVo;
@@ -30,6 +32,12 @@ public class DriverServiceImpl implements DriverService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private LocationFeignClient locationFeignClient;
+
+    @Autowired
+    private NewOrderFeignClient newOrderFeignClient;
 
     @Override
     public String login(String code) {
@@ -91,5 +99,65 @@ public class DriverServiceImpl implements DriverService {
         log.info("调用service-driver服务creatDriverFaceModel接口结果：{}", JSON.toJSONString(booleanResult));
 
         return booleanResult.getData();
+    }
+
+    @Override
+    public Boolean isFaceRecognition(Long driverId) {
+        Boolean data = driverInfoFeignClient.isFaceRecognition(driverId).getData();
+        log.info("调用service-driver服务isFaceRecognition接口结果：{}", data);
+
+        return true;
+    }
+
+    @Override
+    public Boolean verifyDriverFace(DriverFaceModelForm driverFaceModelForm) {
+        Boolean data = driverInfoFeignClient.verifyDriverFace(driverFaceModelForm).getData();
+        log.info("调用service-driver服务verifyDriverFace接口结果：{}", data);
+
+        return true;
+    }
+
+    @Override
+    public Boolean startService(Long driverId) {
+        // 判断是否完成认证
+        // DriverLoginVo driverLoginVo = driverInfoFeignClient.getDriverInfo(driverId).getData();
+        // log.info("调用service-driver服务getDriverLoginInfo接口结果：{}", JSON.toJSONString(driverLoginVo));
+        //
+        // if (!driverLoginVo.getAuthStatus().equals(DriverAuthStatusEnum.CERTIFIED.getCode())) {
+        //     throw new MoyuException(ResultCodeEnum.AUTH_ERROR);
+        // }
+        //
+        // // 判断当日是否人脸识别
+        // Boolean isFace = driverInfoFeignClient.isFaceRecognition(driverId).getData();
+        // log.info("调用service-driver服务isFaceRecognition接口结果：{}", isFace);
+        //
+        // if (!isFace) {
+        //     throw new MoyuException(ResultCodeEnum.FACE_ERROR);
+        // }
+
+        // 更新接单状态 1-开始接单
+        driverInfoFeignClient.updateServiceStatus(driverId, 1);
+
+        // 删除redis司机位置信息
+        locationFeignClient.removeDriverLocation(driverId);
+
+        // 清空司机临时队列数据
+        newOrderFeignClient.clearNewOrderQueueData(driverId);
+
+        return true;
+    }
+
+    @Override
+    public Boolean stopService(Long driverId) {
+        //更新司机的接单状态 0
+        driverInfoFeignClient.updateServiceStatus(driverId,0);
+
+        //删除司机位置信息
+        locationFeignClient.removeDriverLocation(driverId);
+
+        //清空司机临时队列
+        newOrderFeignClient.clearNewOrderQueueData(driverId);
+
+        return true;
     }
 }

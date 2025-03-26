@@ -48,6 +48,7 @@
         <!-- https://seata.io/zh-cn/docs/overview/what-is-seata.html -->
         <seata.version>1.7.1</seata.version>
         <drools.version>8.41.0.Final</drools.version>
+        <hutool.version>5.8.25</hutool.version>
     </properties>
 
     <!--配置dependencyManagement锁定依赖的版本-->
@@ -183,6 +184,11 @@
                 <groupId>org.drools</groupId>
                 <artifactId>drools-mvel</artifactId>
                 <version>${drools.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

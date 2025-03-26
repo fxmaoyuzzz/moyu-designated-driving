@@ -27,6 +27,6 @@ public class XxlJobLog extends BaseEntity {
 
 	@Schema(description = "耗时(单位：毫秒)")
 	@TableField("times")
-	private Integer times;
+	private Long times;
 
 }

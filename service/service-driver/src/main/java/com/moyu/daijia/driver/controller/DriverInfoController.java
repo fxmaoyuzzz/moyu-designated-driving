@@ -1,7 +1,9 @@
 package com.moyu.daijia.driver.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.moyu.daijia.common.result.Result;
 import com.moyu.daijia.driver.service.DriverInfoService;
+import com.moyu.daijia.model.entity.driver.DriverSet;
 import com.moyu.daijia.model.form.driver.DriverFaceModelForm;
 import com.moyu.daijia.model.form.driver.UpdateDriverAuthInfoForm;
 import com.moyu.daijia.model.vo.driver.DriverAuthInfoVo;
@@ -40,6 +42,8 @@ public class DriverInfoController {
     @Operation(summary = "获取司机认证信息")
     @GetMapping("/getDriverAuthInfo/{driverId}")
     public Result<DriverAuthInfoVo> getDriverAuthInfo(@PathVariable Long driverId) {
+        log.info("调用DriverInfoController.getDriverAuthInfo接口SUCCESS，入参：{}", driverId);
+
         DriverAuthInfoVo driverAuthInfoVo = driverInfoService.getDriverAuthInfo(driverId);
         return Result.ok(driverAuthInfoVo);
     }
@@ -47,6 +51,8 @@ public class DriverInfoController {
     @Operation(summary = "更新司机认证信息")
     @PostMapping("/updateDriverAuthInfo")
     public Result<Boolean> updateDriverAuthInfo(@RequestBody UpdateDriverAuthInfoForm updateDriverAuthInfoForm) {
+        log.info("调用DriverInfoController.updateDriverAuthInfo接口SUCCESS，入参：{}", JSON.toJSONString(updateDriverAuthInfoForm));
+
         Boolean isSuccess = driverInfoService.updateDriverAuthInfo(updateDriverAuthInfoForm);
         return Result.ok(isSuccess);
     }
@@ -54,8 +60,42 @@ public class DriverInfoController {
     @Operation(summary = "创建司机人脸模型")
     @PostMapping("/creatDriverFaceModel")
     public Result<Boolean> creatDriverFaceModel(@RequestBody DriverFaceModelForm driverFaceModelForm) {
+        log.info("调用DriverInfoController.creatDriverFaceModel接口SUCCESS，入参：{}", JSON.toJSONString(driverFaceModelForm));
+
         Boolean isSuccess = driverInfoService.creatDriverFaceModel(driverFaceModelForm);
         return Result.ok(isSuccess);
+    }
+
+    @Operation(summary = "获取司机设置信息")
+    @GetMapping("/getDriverSet/{driverId}")
+    public Result<DriverSet> getDriverSet(@PathVariable Long driverId) {
+        log.info("调用DriverInfoController.getDriverSet接口SUCCESS，入参：{}", driverId);
+
+        return Result.ok(driverInfoService.getDriverSet(driverId));
+    }
+
+    @Operation(summary = "判断司机当日是否进行过人脸识别")
+    @GetMapping("/isFaceRecognition/{driverId}")
+    Result<Boolean> isFaceRecognition(@PathVariable("driverId") Long driverId) {
+        log.info("调用DriverInfoController.isFaceRecognition接口SUCCESS，入参：{}", driverId);
+
+        return Result.ok(driverInfoService.isFaceRecognition(driverId));
+    }
+
+    @Operation(summary = "验证司机人脸")
+    @PostMapping("/verifyDriverFace")
+    public Result<Boolean> verifyDriverFace(@RequestBody DriverFaceModelForm driverFaceModelForm) {
+        log.info("调用DriverInfoController.verifyDriverFace接口SUCCESS，入参：{}", JSON.toJSONString(driverFaceModelForm));
+
+        return Result.ok(driverInfoService.verifyDriverFace(driverFaceModelForm));
+    }
+
+    @Operation(summary = "更新司机接单状态")
+    @GetMapping("/updateServiceStatus/{driverId}/{status}")
+    public Result<Boolean> updateServiceStatus(@PathVariable Long driverId, @PathVariable Integer status) {
+        log.info("调用DriverInfoController.updateServiceStatus接口SUCCESS，司机ID：{}，目标状态：{}", driverId, status);
+
+        return Result.ok(driverInfoService.updateServiceStatus(driverId, status));
     }
 }
 

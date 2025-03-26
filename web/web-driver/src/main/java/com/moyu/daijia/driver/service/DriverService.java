@@ -47,4 +47,35 @@ public interface DriverService {
      */
     Boolean creatDriverFaceModel(DriverFaceModelForm driverFaceModelForm);
 
+    /**
+     * 判断司机当日是否进行过人脸识别
+     *
+     * @param driverId
+     * @return
+     */
+    Boolean isFaceRecognition(Long driverId);
+
+    /**
+     * 验证司机人脸
+     *
+     * @param driverFaceModelForm
+     * @return
+     */
+    Boolean verifyDriverFace(DriverFaceModelForm driverFaceModelForm);
+
+    /**
+     * 开始接单服务
+     *
+     * @param driverId
+     * @return
+     */
+    Boolean startService(Long driverId);
+
+    /**
+     * 停止接单服务
+     *
+     * @param driverId
+     * @return
+     */
+    Boolean stopService(Long driverId);
 }

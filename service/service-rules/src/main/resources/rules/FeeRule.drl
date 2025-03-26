@@ -1,11 +1,10 @@
-//package对应的不一定是真正的目录，可以任意写com.abc，同一个包下的drl文件可以相互访问
 package  com.moyu.daijia
 
-import rules.form.com.moyu.daijia.model.FeeRuleRequest;
+import com.moyu.daijia.model.form.rules.FeeRuleRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-global rules.vo.com.moyu.daijia.model.FeeRuleResponse feeRuleResponse;
+global com.moyu.daijia.model.vo.rules.FeeRuleResponse feeRuleResponse;
 
 /**
 1.起步价
@@ -16,9 +15,6 @@ rule "起步价 00:00:00-06:59:59  19元(含3公里)"
     salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
     no-loop true         //防止陷入死循环
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:FeeRuleRequest(startTime >= "00:00:00" && startTime <= "06:59:59")
     then
         feeRuleResponse.setBaseDistance(new BigDecimal("3.0"));
@@ -29,12 +25,9 @@ rule "起步价 00:00:00-06:59:59  19元(含3公里)"
         System.out.println("00:00:00-06:59:59 " + feeRuleResponse.getBaseDistance() + "公里，起步价:" + feeRuleResponse.getBaseDistanceFee() + "元");
 end
 rule "起步价 07:00:00-23:59:59  19元(含5公里)"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10
+    no-loop true
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:FeeRuleRequest(startTime >= "07:00:00" && startTime <= "23:59:59")
     then
         feeRuleResponse.setBaseDistance(new BigDecimal("5.0"));
@@ -53,12 +46,9 @@ end
     07:00:00-23:59:59   3元/1公里
 */
 rule "里程费 00:00:00-06:59:59 4元/1公里"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10
+    no-loop true
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:FeeRuleRequest(startTime >= "00:00:00"
             && startTime <= "06:59:59"
             && distance.doubleValue() > 3.0)
@@ -69,12 +59,9 @@ rule "里程费 00:00:00-06:59:59 4元/1公里"
         System.out.println("里程费，超出里程:" + feeRuleResponse.getExceedDistance() + "公里，单价：" + feeRuleResponse.getExceedDistancePrice());
 end
 rule "里程费 07:00:00-23:59:59 3元/1公里"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10
+    no-loop true
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:FeeRuleRequest(startTime >= "07:00:00"
             && startTime <= "23:59:59"
             && distance.doubleValue() > 5.0)
@@ -90,12 +77,9 @@ end
     等候10分钟后  1元/1分钟
 */
 rule "等候费 等候10分钟后 1元/1分钟"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10
+    no-loop true
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:FeeRuleRequest(waitMinute > 10)
     then
         Integer exceedWaitMinute = $rule.getWaitMinute() - 10;
@@ -105,12 +89,9 @@ rule "等候费 等候10分钟后 1元/1分钟"
         System.out.println("等候费，超出分钟:" + feeRuleResponse.getExceedWaitMinute() + "分钟，单价：" + feeRuleResponse.getExceedWaitMinutePrice());
 end
 rule "无等候费"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10
+    no-loop true
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:FeeRuleRequest(waitMinute <= 10)
     then
         feeRuleResponse.setBaseWaitMinute(10);
@@ -124,12 +105,9 @@ end
     订单行程超出12公里后每公里1元
 */
 rule "远途费 订单行程超出12公里后每公里1元"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10
+    no-loop true
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:FeeRuleRequest(distance.doubleValue() > 12.0)
     then
         BigDecimal exceedLongDistance = $rule.getDistance().subtract(new BigDecimal("12.0"));
@@ -139,12 +117,9 @@ rule "远途费 订单行程超出12公里后每公里1元"
         System.out.println("远途费，超出公里:" + feeRuleResponse.getExceedLongDistance() + "公里，单价：" + feeRuleResponse.getExceedLongDistancePrice());
 end
 rule "无远途费"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10
+    no-loop true
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:FeeRuleRequest(distance.doubleValue() <= 12.0)
     then
         feeRuleResponse.setBaseLongDistance(new BigDecimal("12.0"));
@@ -158,12 +133,9 @@ end
     订单总金额 = 基础里程费 + 超出基础里程的费 + 等候费 + 远程费
 */
 rule "计算总金额"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10
+    no-loop true
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:FeeRuleRequest(distance.doubleValue() > 0.0)
     then
         //订单总金额 = 基础里程费 + 超出基础里程的费 + 等候费 + 远程费

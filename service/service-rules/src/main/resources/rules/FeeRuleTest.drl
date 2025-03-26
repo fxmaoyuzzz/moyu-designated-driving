@@ -1,0 +1,9 @@
+package com.moyu.daijia
+
+rule "rule_1"
+
+    when
+        eval(true)
+    then
+        System.out.println("规则成功");
+end

@@ -5,6 +5,7 @@ import com.moyu.daijia.common.execption.MoyuException;
 import com.moyu.daijia.common.result.ResultCodeEnum;
 import com.moyu.daijia.common.util.AuthContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @date 2024-06-25 15:30
  */
 
+@Slf4j
 @Component
 @Aspect
 public class GlobalLoginAspect {
@@ -39,12 +41,14 @@ public class GlobalLoginAspect {
         String token = request.getHeader("token");
 
         if (!StringUtils.hasText(token)) {
+            log.warn("登录校验失败，未获取到token");
             throw new MoyuException(ResultCodeEnum.LOGIN_AUTH);
         }
 
-        //查询redis 把用户id放到ThreadLocal里面
+        // 查询redis 把用户id放到ThreadLocal里面
         String customerId = (String) redisTemplate.opsForValue()
                 .get(RedisConstant.USER_LOGIN_KEY_PREFIX + token);
+        log.warn("登录校验获取缓存中的用户id" + customerId);
 
         if (StringUtils.hasText(customerId)) {
             AuthContextHolder.setUserId(Long.parseLong(customerId));

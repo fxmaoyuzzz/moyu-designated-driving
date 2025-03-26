@@ -1,24 +1,19 @@
-//package对应的不一定是真正的目录，可以任意写com.abc，同一个包下的drl文件可以相互访问
 package  com.moyu.daijia
 
-import rules.form.com.moyu.daijia.model.ProfitsharingRuleRequest;
+import com.moyu.daijia.model.form.rules.ProfitsharingRuleRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-global rules.vo.com.moyu.daijia.model.ProfitsharingRuleResponse profitsharingRuleResponse;
-//支付微信平台费率：0.6%
-//global BigDecimal paymentRate = new BigDecimal(0.006);
+global com.moyu.daijia.model.vo.rules.ProfitsharingRuleResponse profitsharingRuleResponse;
 /**
 支付微信平台费用
     平台费率：0.6%
+    global BigDecimal paymentRate = new BigDecimal(0.006);
 */
 rule "支付微信平台费用 平台费率：0.6%"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10          
+    no-loop true         
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:ProfitsharingRuleRequest()
     then
         profitsharingRuleResponse.setOrderAmount($rule.getOrderAmount());
@@ -34,12 +29,9 @@ end
     当天完成订单大于10单 平台抽成 18%
 */
 rule "订单金额小于等于100 当天完成订单小于等于10单"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10          
+    no-loop true         
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:ProfitsharingRuleRequest(orderAmount.doubleValue() <= 100.0 && orderNum <= 10)
     then
         BigDecimal totalAmount = profitsharingRuleResponse.getOrderAmount().subtract(profitsharingRuleResponse.getPaymentFee());
@@ -55,12 +47,9 @@ rule "订单金额小于等于100 当天完成订单小于等于10单"
         System.out.println("平台分账收入：" + platformIncome + "元" + "，司机分账收入：" + driverIncome + "元" + "，司机个税：" + driverTaxFee + "元");
 end
 rule "订单金额小于等于100 天完成订单大于10单"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10          
+    no-loop true         
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:ProfitsharingRuleRequest(orderAmount.doubleValue() <= 100.0 && orderNum > 10)
     then
         BigDecimal totalAmount = profitsharingRuleResponse.getOrderAmount().subtract(profitsharingRuleResponse.getPaymentFee());
@@ -82,12 +71,9 @@ end
     当天完成订单大于10单 平台抽成 16%
 */
 rule "订单金额大于100 当天完成订单小于等于10单"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10          
+    no-loop true         
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:ProfitsharingRuleRequest(orderAmount.doubleValue() > 100.0 && orderNum <= 10)
     then
         BigDecimal totalAmount = profitsharingRuleResponse.getOrderAmount().subtract(profitsharingRuleResponse.getPaymentFee());
@@ -103,12 +89,9 @@ rule "订单金额大于100 当天完成订单小于等于10单"
         System.out.println("平台分账收入：" + platformIncome + "元" + "，司机分账收入：" + driverIncome + "元" + "，司机个税：" + driverTaxFee + "元");
 end
 rule "订单金额大于100 天完成订单大于10单"
-    salience 10          //指定优先级，数值越大优先级越高，不指定的情况下由上到下执行
-    no-loop true         //防止陷入死循环
+    salience 10          
+    no-loop true         
     when
-        /*规则条件，到工作内存中查找FeeRuleRequest对象
-        里面出来的结果只能是ture或者false
-        $rule是绑定变量名，可以任意命名，官方推荐$符号，定义了绑定变量名，可以在then部分操作fact对象*/
         $rule:ProfitsharingRuleRequest(orderAmount.doubleValue() > 100.0 && orderNum > 10)
     then
         BigDecimal totalAmount = profitsharingRuleResponse.getOrderAmount().subtract(profitsharingRuleResponse.getPaymentFee());
