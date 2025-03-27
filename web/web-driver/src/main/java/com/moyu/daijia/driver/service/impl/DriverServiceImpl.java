@@ -67,7 +67,7 @@ public class DriverServiceImpl implements DriverService {
         Long driverId = AuthContextHolder.getUserId();
         log.info("获取ThreadLocal中的司机用户id值：{}", driverId);
 
-        Result<DriverLoginVo> loginVoResult = driverInfoFeignClient.getDriverInfo(driverId);
+        Result<DriverLoginVo> loginVoResult = driverInfoFeignClient.getDriverLoginInfo(driverId);
         log.info("调用service-driver服务getDriverLoginInfo接口结果：{}", JSON.toJSONString(loginVoResult));
 
         DriverLoginVo driverLoginVo = loginVoResult.getData();

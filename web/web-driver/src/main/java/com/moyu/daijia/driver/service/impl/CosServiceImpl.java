@@ -19,10 +19,11 @@ public class CosServiceImpl implements CosService {
     private CosFeignClient cosFeignClient;
 
     @Override
-    public CosUploadVo uploadFile(MultipartFile file, String path) {
+    public String uploadFile(MultipartFile file, String path) {
         Result<CosUploadVo> cosUploadVoResult = cosFeignClient.upload(file, path);
         log.info("调用service-driver服务upload接口结果：{}", JSON.toJSONString(cosUploadVoResult));
         CosUploadVo cosUploadVo = cosUploadVoResult.getData();
-        return cosUploadVo;
+        String showUrl = cosUploadVo.getShowUrl();
+        return showUrl;
     }
 }

@@ -72,6 +72,10 @@
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
             <scope>provided </scope>
         </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

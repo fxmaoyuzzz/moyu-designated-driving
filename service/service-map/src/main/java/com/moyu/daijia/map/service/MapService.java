@@ -5,6 +5,12 @@ import com.moyu.daijia.model.vo.map.DrivingLineVo;
 
 public interface MapService {
 
+    /**
+     * 计算驾驶线路
+     *
+     * @param calculateDrivingLineForm
+     * @return
+     */
     DrivingLineVo calculateDrivingLine(CalculateDrivingLineForm calculateDrivingLineForm);
 
 }

@@ -2,7 +2,6 @@ package com.moyu.daijia.driver.controller;
 
 import com.moyu.daijia.common.result.Result;
 import com.moyu.daijia.driver.service.CosService;
-import com.moyu.daijia.model.vo.driver.CosUploadVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +22,10 @@ public class CosController {
     @Operation(summary = "上传")
     // @GlobalLogin
     @PostMapping("/upload")
-    public Result<CosUploadVo> upload(@RequestPart("file") MultipartFile file,
+    public Result<String> upload(@RequestPart("file") MultipartFile file,
                                       @RequestParam(name = "path", defaultValue = "auth") String path) {
-        CosUploadVo cosUploadVo = cosService.uploadFile(file, path);
-        return Result.ok(cosUploadVo);
+        String url = cosService.uploadFile(file, path);
+        return Result.ok(url);
     }
 }
 

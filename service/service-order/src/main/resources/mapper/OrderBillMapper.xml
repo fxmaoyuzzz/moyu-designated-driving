@@ -6,6 +6,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.moyu.daijia.order.mapper.OrderBillMapper">
 
+    <update id="updateCouponAmount">
+        update order_bill set coupon_amount = #{couponAmount}, pay_amount = pay_amount - #{couponAmount} where order_id = #{orderId}
+    </update>
 
 </mapper>
 

@@ -1,6 +1,5 @@
 package com.moyu.daijia.driver.service;
 
-import com.moyu.daijia.model.vo.driver.CosUploadVo;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CosService {
@@ -12,5 +11,5 @@ public interface CosService {
      * @param path
      * @return
      */
-    CosUploadVo uploadFile(MultipartFile file, String path);
+    String uploadFile(MultipartFile file, String path);
 }

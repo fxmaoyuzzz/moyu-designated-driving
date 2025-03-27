@@ -37,7 +37,7 @@ public class MoyuException extends RuntimeException {
 
     @Override
     public String toString() {
-        return "GuliException{" +
+        return "MoyuException{" +
                 "code=" + code +
                 ", message=" + this.getMessage() +
                 '}';

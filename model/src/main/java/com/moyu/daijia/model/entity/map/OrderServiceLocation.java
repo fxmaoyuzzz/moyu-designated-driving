@@ -20,7 +20,7 @@ public class OrderServiceLocation {
 	@Schema(description = "订单id")
 	private Long orderId;
 
-	@Schema(description = "金度")
+	@Schema(description = "经度")
 	private BigDecimal latitude;
 
 	@Schema(description = "纬度")

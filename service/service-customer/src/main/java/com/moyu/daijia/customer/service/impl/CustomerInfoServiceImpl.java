@@ -37,7 +37,7 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
 
     @Override
     public Long login(String code) {
-        //获取code值，使用微信工具包对象，获取微信唯一标识openid
+        // 获取code值，使用微信工具包对象，获取微信唯一标识openid
         String openid = null;
         try {
             WxMaJscode2SessionResult sessionInfo =
@@ -50,13 +50,13 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
             throw new RuntimeException(e);
         }
 
-        //根据openid查询数据库表，判断是否第一次登录
-        //如果openid不存在返回null，如果存在返回一条记录
+        // 根据openid查询数据库表，判断是否第一次登录
+        // 如果openid不存在返回null，如果存在返回一条记录
         LambdaQueryWrapper<CustomerInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(CustomerInfo::getWxOpenId, openid);
         CustomerInfo customerInfo = customerInfoMapper.selectOne(wrapper);
 
-        //如果第一次登录，添加信息到用户表
+        // 如果第一次登录，添加信息到用户表
         if (customerInfo == null) {
             log.info("用户为第一次登录，保存用户信息到用户信息表");
             customerInfo = new CustomerInfo();
@@ -66,7 +66,7 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
             customerInfoMapper.insert(customerInfo);
         }
 
-        //记录登录日志信息
+        // 记录登录日志信息
         CustomerLoginLog customerLoginLog = new CustomerLoginLog();
         customerLoginLog.setCustomerId(customerInfo.getId());
         customerLoginLog.setMsg("小程序登录");
@@ -77,7 +77,7 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
 
     @Override
     public CustomerLoginVo getCustomerInfo(Long customerId) {
-        //根据用户id查询用户信息 封装返回
+        // 根据用户id查询用户信息 封装返回
         CustomerInfo customerInfo = customerInfoMapper.selectById(customerId);
         log.info("根据用户id查询用户信息结果：{}", JSON.toJSONString(customerInfo));
 
@@ -109,5 +109,13 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
         } catch (WxErrorException e) {
             throw new MoyuException(ResultCodeEnum.DATA_ERROR);
         }
+    }
+
+    @Override
+    public String getCustomerOpenId(Long customerId) {
+        LambdaQueryWrapper<CustomerInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(CustomerInfo::getId, customerId);
+        CustomerInfo customerInfo = customerInfoMapper.selectOne(wrapper);
+        return customerInfo.getWxOpenId();
     }
 }

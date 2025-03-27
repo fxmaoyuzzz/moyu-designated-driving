@@ -14,5 +14,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		id,user_id,total_amount,lock_amount,available_amount,total_income_amount,total_pay_amount,create_time,update_time,is_deleted
 	</sql>
 
+	<update id="add">
+		update driver_account
+		set total_amount = total_amount + #{amount}, available_amount = available_amount + #{amount}, total_income_amount = total_income_amount + #{amount}
+		where driver_id = #{driverId}
+	</update>
+
 </mapper>
 

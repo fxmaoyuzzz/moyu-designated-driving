@@ -5,6 +5,7 @@ import com.moyu.daijia.model.entity.driver.DriverSet;
 import com.moyu.daijia.model.form.driver.DriverFaceModelForm;
 import com.moyu.daijia.model.form.driver.UpdateDriverAuthInfoForm;
 import com.moyu.daijia.model.vo.driver.DriverAuthInfoVo;
+import com.moyu.daijia.model.vo.driver.DriverInfoVo;
 import com.moyu.daijia.model.vo.driver.DriverLoginVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +32,8 @@ public interface DriverInfoFeignClient {
      * @param driverId
      * @return
      */
-    @GetMapping("/driver/info/getDriverInfo/{driverId}")
-    Result<DriverLoginVo> getDriverInfo(@PathVariable Long driverId);
+    @GetMapping("/driver/info/getDriverLoginInfo/{driverId}")
+    Result<DriverLoginVo> getDriverLoginInfo(@PathVariable Long driverId);
 
     /**
      * 获取司机认证信息
@@ -98,4 +99,23 @@ public interface DriverInfoFeignClient {
      */
     @GetMapping("/driver/info/updateServiceStatus/{driverId}/{status}")
     Result<Boolean> updateServiceStatus(@PathVariable("driverId") Long driverId, @PathVariable("status") Integer status);
+
+    /**
+     * 获取司机基本信息
+     *
+     * @param driverId
+     * @return
+     */
+    @GetMapping("/driver/info/getDriverInfo/{driverId}")
+    Result<DriverInfoVo> getDriverInfo(@PathVariable("driverId") Long driverId);
+
+
+    /**
+     * 获取司机OpenId
+     *
+     * @param driverId
+     * @return
+     */
+    @GetMapping("/driver/info/getDriverOpenId/{driverId}")
+    public Result<String> getDriverOpenId(@PathVariable Long driverId);
 }

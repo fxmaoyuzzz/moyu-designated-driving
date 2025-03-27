@@ -7,5 +7,53 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.moyu.daijia.order.mapper.OrderInfoMapper">
 
 
+    <select id="selectCustomerOrderPage" resultType="com.moyu.daijia.model.vo.order.OrderListVo">
+        select
+            info.id,
+            info.order_no,
+            info.start_location,
+            info.end_location,
+
+            if(info.status &lt; 7, info.expect_amount, bill.pay_amount) as amount,
+
+            info.status,
+            info.create_time
+        from order_info info left join order_bill bill on info.id = bill.order_id
+        where info.customer_id = #{customerId}
+          and info.is_deleted =0
+        order by info.create_time desc
+    </select>
+    <select id="findDriverOrderPage" resultType="com.moyu.daijia.model.vo.order.OrderListVo">
+        select
+            info.id,
+            info.order_no,
+            info.start_location,
+            info.end_location,
+            real_amount as pay_amount,
+            if(info.status &lt; 7, info.expect_amount, info.real_amount) as amount,
+
+            info.status,
+            info.create_time
+        from order_info info
+        where info.driver_id = #{driverId}
+          and info.is_deleted =0
+        order by info.create_time desc
+    </select>
+    <select id="selectOrderPayVo" resultType="com.moyu.daijia.model.vo.order.OrderPayVo">
+        select
+            info.id as order_id,
+            info.customer_id,
+            info.driver_id,
+            info.order_no,
+            info.start_location,
+            info.end_location,
+            info.status,
+            bill.pay_amount,
+            bill.coupon_amount
+
+        from order_info info inner join order_bill bill on info.id = bill.order_id
+        where info.customer_id = #{customerId}
+          and info.order_no = #{orderNo}
+    </select>
 </mapper>
 

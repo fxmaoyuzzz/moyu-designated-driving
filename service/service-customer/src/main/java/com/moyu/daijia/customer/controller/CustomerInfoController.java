@@ -63,5 +63,12 @@ public class CustomerInfoController {
         log.info("调用CustomerInfoController.updateWxPhoneNumber接口SUCCESS，入参：{}", JSON.toJSONString(updateWxPhoneForm));
         return Result.ok(customerInfoService.updateWxPhoneNumber(updateWxPhoneForm));
     }
+
+    @Operation(summary = "获取客户OpenId")
+    @GetMapping("/getCustomerOpenId/{customerId}")
+    public Result<String> getCustomerOpenId(@PathVariable Long customerId) {
+        log.info("调用CustomerInfoController.getCustomerOpenId接口SUCCESS，入参：{}", customerId);
+        return Result.ok(customerInfoService.getCustomerOpenId(customerId));
+    }
 }
 

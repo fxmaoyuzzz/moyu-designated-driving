@@ -7,6 +7,7 @@ import com.moyu.daijia.model.entity.driver.DriverSet;
 import com.moyu.daijia.model.form.driver.DriverFaceModelForm;
 import com.moyu.daijia.model.form.driver.UpdateDriverAuthInfoForm;
 import com.moyu.daijia.model.vo.driver.DriverAuthInfoVo;
+import com.moyu.daijia.model.vo.driver.DriverInfoVo;
 import com.moyu.daijia.model.vo.driver.DriverLoginVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,10 +33,10 @@ public class DriverInfoController {
     }
 
     @Operation(summary = "获取司机登录信息")
-    @GetMapping("/getDriverInfo/{driverId}")
-    public Result<DriverLoginVo> getDriverInfo(@PathVariable Long driverId) {
-        log.info("调用DriverInfoController.getDriverInfo接口SUCCESS，入参：{}", driverId);
-        DriverLoginVo driverLoginVo = driverInfoService.getDriverInfo(driverId);
+    @GetMapping("/getDriverLoginInfo/{driverId}")
+    public Result<DriverLoginVo> getDriverLoginInfo(@PathVariable Long driverId) {
+        log.info("调用DriverInfoController.getDriverLoginInfo接口SUCCESS，入参：{}", driverId);
+        DriverLoginVo driverLoginVo = driverInfoService.getDriverLoginInfo(driverId);
         return Result.ok(driverLoginVo);
     }
 
@@ -96,6 +97,22 @@ public class DriverInfoController {
         log.info("调用DriverInfoController.updateServiceStatus接口SUCCESS，司机ID：{}，目标状态：{}", driverId, status);
 
         return Result.ok(driverInfoService.updateServiceStatus(driverId, status));
+    }
+
+    @Operation(summary = "获取司机基本信息")
+    @GetMapping("/getDriverInfo/{driverId}")
+    public Result<DriverInfoVo> getDriverInfo(@PathVariable Long driverId) {
+        log.info("调用DriverInfoController.getDriverInfoOrder接口SUCCESS，司机ID：{}", driverId);
+
+        return Result.ok(driverInfoService.getDriverInfo(driverId));
+    }
+
+    @Operation(summary = "获取司机OpenId")
+    @GetMapping("/getDriverOpenId/{driverId}")
+    public Result<String> getDriverOpenId(@PathVariable Long driverId) {
+        log.info("调用DriverInfoController.getDriverOpenId接口SUCCESS，司机ID：{}", driverId);
+
+        return Result.ok(driverInfoService.getDriverOpenId(driverId));
     }
 }
 

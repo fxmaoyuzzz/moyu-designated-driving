@@ -16,6 +16,7 @@ import com.moyu.daijia.model.entity.driver.*;
 import com.moyu.daijia.model.form.driver.DriverFaceModelForm;
 import com.moyu.daijia.model.form.driver.UpdateDriverAuthInfoForm;
 import com.moyu.daijia.model.vo.driver.DriverAuthInfoVo;
+import com.moyu.daijia.model.vo.driver.DriverInfoVo;
 import com.moyu.daijia.model.vo.driver.DriverLoginVo;
 import com.tencentcloudapi.common.AbstractModel;
 import com.tencentcloudapi.common.Credential;
@@ -114,7 +115,7 @@ public class DriverInfoServiceImpl extends ServiceImpl<DriverInfoMapper, DriverI
     }
 
     @Override
-    public DriverLoginVo getDriverInfo(Long driverId) {
+    public DriverLoginVo getDriverLoginInfo(Long driverId) {
         // 根据司机id获取司机信息
         DriverInfo driverInfo = driverInfoMapper.selectById(driverId);
         log.info("根据driverId查询数据库结果：{}", JSON.toJSONString(driverInfo));
@@ -295,5 +296,32 @@ public class DriverInfoServiceImpl extends ServiceImpl<DriverInfoMapper, DriverI
         driverSet.setServiceStatus(status);
         driverSetMapper.update(driverSet, wrapper);
         return true;
+    }
+
+    @Override
+    public DriverInfoVo getDriverInfo(Long driverId) {
+        DriverInfo driverInfo = driverInfoMapper.selectById(driverId);
+
+        DriverInfoVo driverInfoVo = new DriverInfoVo();
+        BeanUtils.copyProperties(driverInfo, driverInfoVo);
+
+        // 计算驾龄
+        int currentYear = new DateTime().getYear();
+        // 获取驾驶证初次领证日期
+        // driver_license_issue_date
+        int firstYear = new DateTime(driverInfo.getDriverLicenseIssueDate()).getYear();
+        int driverLicenseAge = currentYear - firstYear;
+        driverInfoVo.setDriverLicenseAge(driverLicenseAge);
+
+        return driverInfoVo;
+    }
+
+    @Override
+    public String getDriverOpenId(Long driverId) {
+        LambdaQueryWrapper<DriverInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(DriverInfo::getId, driverId);
+        DriverInfo customerInfo = driverInfoMapper.selectOne(wrapper);
+
+        return customerInfo.getWxOpenId();
     }
 }

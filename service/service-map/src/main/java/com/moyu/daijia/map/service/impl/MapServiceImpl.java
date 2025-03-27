@@ -30,6 +30,13 @@ public class MapServiceImpl implements MapService {
 
     @Override
     public DrivingLineVo calculateDrivingLine(CalculateDrivingLineForm calculateDrivingLineForm) {
+        if (calculateDrivingLineForm.getStartPointLatitude().compareTo(BigDecimal.ZERO) == 0
+                || calculateDrivingLineForm.getStartPointLongitude().compareTo(BigDecimal.ZERO) == 0
+                || calculateDrivingLineForm.getEndPointLatitude().compareTo(BigDecimal.ZERO) == 0
+                || calculateDrivingLineForm.getEndPointLongitude().compareTo(BigDecimal.ZERO) == 0) {
+            log.warn("调用腾讯云位置服务失败，参数错误");
+            throw new MoyuException(ResultCodeEnum.ILLEGAL_REQUEST);
+        }
         String url = "https://apis.map.qq.com/ws/direction/v1/driving/?from={from}&to={to}&key={key}";
 
         Map<String, String> map = new HashMap();
