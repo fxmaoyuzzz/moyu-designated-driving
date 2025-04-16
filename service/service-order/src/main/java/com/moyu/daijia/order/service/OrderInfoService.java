@@ -188,4 +188,12 @@ public interface OrderInfoService extends IService<OrderInfo> {
      * @param orderNo
      */
     void updateProfitsharingStatus(String orderNo);
+
+    /**
+     *
+     * 根据订单号查询订单详情
+     * @param orderNo
+     * @return
+     */
+    OrderInfo getByOrderNo(String orderNo);
 }

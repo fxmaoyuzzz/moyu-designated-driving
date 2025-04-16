@@ -1,5 +1,6 @@
 package com.moyu.daijia.payment.service;
 
+import com.moyu.daijia.model.entity.payment.PaymentInfo;
 import com.moyu.daijia.model.form.payment.PaymentInfoForm;
 import com.moyu.daijia.model.vo.payment.WxPrepayVo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,4 +37,11 @@ public interface WxPayService {
      * @param orderNo
      */
     void handleOrder(String orderNo);
+
+    /**
+     * 支付时同步保存支付信息
+     * @param paymentInfo
+     * @return
+     */
+    void savePaymentInfo(PaymentInfo paymentInfo);
 }

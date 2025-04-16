@@ -78,6 +78,15 @@ public interface OrderInfoFeignClient {
     Result<OrderInfo> getOrderInfo(@PathVariable("orderId") Long orderId);
 
     /**
+     * 根据订单号获取订单信息
+     *
+     * @param orderNo
+     * @return
+     */
+    @GetMapping("/order/info/getOrderInfoByOrderNo/{orderNo}")
+    Result<OrderInfo> getOrderInfoByOrderNo(@PathVariable("orderNo") String orderNo);
+
+    /**
      * 司机到达起始点
      *
      * @param orderId

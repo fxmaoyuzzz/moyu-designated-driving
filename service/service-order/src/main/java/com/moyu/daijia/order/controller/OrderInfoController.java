@@ -79,6 +79,14 @@ public class OrderInfoController {
         return Result.ok(orderInfoService.getById(orderId));
     }
 
+    @Operation(summary = "根据订单号获取订单信息")
+    @GetMapping("/getOrderInfoByOrderNo/{orderNo}")
+    public Result<OrderInfo> getOrderInfoByOrderNo(@PathVariable String orderNo) {
+        log.info("调用OrderInfoController.getOrderInfo接口SUCCESS，订单号：{}", orderNo);
+
+        return Result.ok(orderInfoService.getByOrderNo(orderNo));
+    }
+
     @Operation(summary = "司机到达起始点")
     @GetMapping("/driverArriveStartLocation/{orderId}/{driverId}")
     public Result<Boolean> driverArriveStartLocation(@PathVariable Long orderId, @PathVariable Long driverId) {

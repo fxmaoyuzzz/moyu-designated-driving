@@ -1,6 +1,7 @@
 package com.moyu.daijia.map.client;
 
 import com.moyu.daijia.common.result.Result;
+import com.moyu.daijia.model.entity.payment.PaymentInfo;
 import com.moyu.daijia.model.form.payment.PaymentInfoForm;
 import com.moyu.daijia.model.vo.payment.WxPrepayVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -30,4 +31,13 @@ public interface WxPayFeignClient {
      */
     @GetMapping("/payment/wxPay/queryPayStatus/{orderNo}")
     Result<Boolean> queryPayStatus(@PathVariable("orderNo") String orderNo);
+
+
+    /**
+     * 支付同步保存支付信息
+     * @param paymentInfo
+     * @return
+     */
+    @PostMapping("/payment/wxPay/savePaymentInfo")
+    Result<Boolean> savePaymentInfo(@RequestBody PaymentInfo paymentInfo);
 }

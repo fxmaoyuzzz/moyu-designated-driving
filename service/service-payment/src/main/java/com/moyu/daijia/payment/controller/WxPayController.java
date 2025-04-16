@@ -1,6 +1,8 @@
 package com.moyu.daijia.payment.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.moyu.daijia.common.result.Result;
+import com.moyu.daijia.model.entity.payment.PaymentInfo;
 import com.moyu.daijia.model.form.payment.PaymentInfoForm;
 import com.moyu.daijia.model.vo.payment.WxPrepayVo;
 import com.moyu.daijia.payment.service.WxPayService;
@@ -24,7 +26,7 @@ public class WxPayController {
     private WxPayService wxPayService;
 
     @Operation(summary = "创建微信支付")
-    @PostMapping("/createJsapi")
+    @PostMapping("/createWxPayment")
     public Result<WxPrepayVo> createWxPayment(@RequestBody PaymentInfoForm paymentInfoForm) {
         log.info("调用WxPayController.createWxPayment接口SUCCESS，入参：{}", paymentInfoForm);
         return Result.ok(wxPayService.createWxPayment(paymentInfoForm));
@@ -60,4 +62,14 @@ public class WxPayController {
         result.put("message", "失败");
         return result;
     }
+
+
+    @Operation(summary = "支付时同步保存支付信息")
+    @PostMapping("/savePaymentInfo")
+    public Result<Boolean> savePaymentInfo(@RequestBody PaymentInfo paymentInfo) {
+        log.info("调用WxPayController.savePaymentInfo接口SUCCESS，入参：{}", JSON.toJSONString(paymentInfo));
+        wxPayService.savePaymentInfo(paymentInfo);
+        return Result.ok(true);
+    }
+
 }

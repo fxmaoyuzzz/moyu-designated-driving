@@ -39,6 +39,7 @@ public class PaymentReceiver {
             key = {MqConst.ROUTING_PAY_SUCCESS}
     ))
     public void paySuccess(String orderNo, Message message, Channel channel) {
+        log.info("支付成功后处理，订单号：{}", orderNo);
         wxPayService.handleOrder(orderNo);
     }
 

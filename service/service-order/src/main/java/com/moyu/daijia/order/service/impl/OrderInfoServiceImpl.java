@@ -220,10 +220,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 OrderStatus.DRIVER_ARRIVED.getStatus(),
                 OrderStatus.UPDATE_CART_INFO.getStatus(),
                 OrderStatus.START_SERVICE.getStatus(),
-                OrderStatus.END_SERVICE.getStatus(),
+                // OrderStatus.END_SERVICE.getStatus(),
                 OrderStatus.UNPAID.getStatus(),
-                OrderStatus.PAID.getStatus(),
-                OrderStatus.FINISH.getStatus()
+                // OrderStatus.PAID.getStatus(),
+                // OrderStatus.FINISH.getStatus()
 
         };
         wrapper.in(OrderInfo::getStatus, statusArray);
@@ -528,5 +528,14 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         OrderProfitsharing updateOrderProfitsharing = new OrderProfitsharing();
         updateOrderProfitsharing.setStatus(2);
         orderProfitsharingMapper.update(updateOrderProfitsharing, updateQueryWrapper);
+    }
+
+    @Override
+    public OrderInfo getByOrderNo(String orderNo) {
+        LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderInfo::getOrderNo, orderNo);
+        OrderInfo orderInfo = orderInfoMapper.selectOne(wrapper);
+
+        return orderInfo;
     }
 }

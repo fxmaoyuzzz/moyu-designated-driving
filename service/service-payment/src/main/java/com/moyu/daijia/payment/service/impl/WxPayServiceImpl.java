@@ -24,7 +24,6 @@ import com.moyu.daijia.payment.config.WxPayV3Properties;
 import com.moyu.daijia.payment.mapper.PaymentInfoMapper;
 import com.moyu.daijia.payment.service.WxPayService;
 import com.wechat.pay.java.service.partnerpayments.jsapi.model.Transaction;
-import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,7 +127,8 @@ public class WxPayServiceImpl implements WxPayService {
         // Transaction transaction = service.queryOrderByOutTradeNo(queryRequest);
         // TODO: 2024/6/27 为了测试通过 此处手动赋值订单号 流水号 默认支付成功 直接进行支付完成后的逻辑处理
 
-        Result<OrderInfo> orderInfo = orderInfoFeignClient.getOrderInfo(Long.valueOf(orderId));
+        Result<OrderInfo> orderInfo = orderInfoFeignClient.getOrderInfoByOrderNo(orderId);
+        log.info("调用orderInfoFeignClient.getOrderInfoByOrderNo查询结果：{}", JSON.toJSONString(orderInfo));
 
         Transaction transaction = new Transaction();
         transaction.setOutTradeNo(orderInfo.getData().getOrderNo());
@@ -217,7 +217,7 @@ public class WxPayServiceImpl implements WxPayService {
                 orderNo);
     }
 
-    @GlobalTransactional
+    // @GlobalTransactional
     @Override
     public void handleOrder(String orderNo) {
         // 更改订单支付状态
@@ -250,6 +250,13 @@ public class WxPayServiceImpl implements WxPayService {
             // 分账有延迟，支付成功后最少2分钟执行分账申请
             rabbitService.sendDelayMessage(MqConst.EXCHANGE_PROFITSHARING, MqConst.ROUTING_PROFITSHARING, JSON.toJSONString(profitsharingForm), SystemConstant.PROFITSHARING_DELAY_TIME);
         }
+
+    }
+
+    @Override
+    public void savePaymentInfo(PaymentInfo paymentInfo) {
+        log.warn("插入订单支付信息{}", JSON.toJSONString(paymentInfo));
+        paymentInfoMapper.insert(paymentInfo);
 
     }
 }

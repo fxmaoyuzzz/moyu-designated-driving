@@ -13,6 +13,7 @@ import com.moyu.daijia.map.client.LocationFeignClient;
 import com.moyu.daijia.map.client.MapFeignClient;
 import com.moyu.daijia.map.client.WxPayFeignClient;
 import com.moyu.daijia.model.entity.order.OrderInfo;
+import com.moyu.daijia.model.entity.payment.PaymentInfo;
 import com.moyu.daijia.model.enums.OrderStatus;
 import com.moyu.daijia.model.form.coupon.UseCouponForm;
 import com.moyu.daijia.model.form.customer.ExpectOrderForm;
@@ -311,10 +312,33 @@ public class OrderServiceImpl implements OrderService {
             WxPrepayVo wxPrepayVo = wxPayFeignClient.createWxPayment(paymentInfoForm).getData();
         }
 
+        // 保存支付记录，便于测试支付成功
+        buildPaymentInfo(orderPayVo, customerOpenId, driverOpenId, payAmount);
+
+
         // TODO: 2024/6/27 为了测试 不调接口 支付默认成功
         WxPrepayVo wxPrepayVo = new WxPrepayVo();
 
         return wxPrepayVo;
+    }
+
+    private void buildPaymentInfo(OrderPayVo orderPayVo, String customerOpenId, String driverOpenId, BigDecimal payAmount) {
+        PaymentInfo paymentInfo = new PaymentInfo();
+        paymentInfo.setCustomerOpenId(customerOpenId);
+        paymentInfo.setDriverOpenId(driverOpenId);
+        paymentInfo.setOrderNo(orderPayVo.getOrderNo());
+        paymentInfo.setPayWay(1101);
+
+        String transactionId = java.util.UUID.randomUUID().toString();
+        paymentInfo.setTransactionId(transactionId);
+        paymentInfo.setAmount(payAmount);
+        paymentInfo.setContent("代驾费");
+        paymentInfo.setPaymentStatus(0);
+        paymentInfo.setCallbackTime(new Date());
+        paymentInfo.setCallbackContent("代驾费支付成功，transactionId" + transactionId);
+
+        wxPayFeignClient.savePaymentInfo(paymentInfo);
+
     }
 
     @Override
