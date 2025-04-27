@@ -49,9 +49,9 @@ Nacos配置文件在DOC目录下，将yaml文件压缩为zip文件后导入到Na
 2. 修改Redis配置 
 3. 修改RabbitMQ配置 
 4. 修改小程序微信公众平台appId、密钥 
-5. 修改腾讯云secretId、secretKey 
+5. 修改腾讯云secretId、secretKey、map（region、bucketPrivate、persionGroupId需要自己在腾讯云创建） 
 6. 修改minio的配置 
-7. 修改XXL-Job中的addresses、appname（appname需要先在XXL-Job中创建）
+7. 修改XXL-Job中的addresses、appname（appname需要先在XXL-Job中创建）、jobGroupId（appname和jobGroupId需要对应）
 
 <img height="300" src="doc/xxl-job执行器.png" width="400" style="margin-left: 100px"/>
 
