@@ -56,6 +56,7 @@ Nacos配置文件在DOC目录下，将yaml文件压缩为zip文件后导入到Na
 <img height="300" src="doc/xxl-job执行器.png" width="400" style="margin-left: 100px"/>
 
 8. 修改MongoDB配置
+9. 需要提前创建XXL-Job需要的表，修改admin服务application.properties中的MySQL配置，然后启动XXL-Job中的XxlJobAdminApplication服务
 
 
 
