@@ -44,18 +44,18 @@
 
 #### **部署Tips**
 -----------------------------------------------------------------------------------------------
-Nacos配置文件在DOC目录下，将yaml文件压缩为zip文件后导入到Nacos
+Nacos配置文件在doc目录下，将zip文件导入到Nacos
 1. 修改MySQL配置 
 2. 修改Redis配置 
 3. 修改RabbitMQ配置 
-4. 修改小程序微信公众平台appId、密钥 
-5. 修改腾讯云secretId、secretKey、map（region、bucketPrivate、persionGroupId需要自己在腾讯云创建） 
-6. 修改minio的配置 
-7. 修改XXL-Job中的addresses、appname（appname需要先在XXL-Job中创建）、jobGroupId（appname和jobGroupId需要对应）
+4. 修改MongoDB配置
+5. 修改minio的配置 
+6. 修改小程序微信公众平台appId、密钥 
+7. 修改腾讯云secretId、secretKey、map（region、bucketPrivate、persionGroupId需要自己在腾讯云创建）
+8. 修改XXL-Job中的addresses、appname（appname需要先在XXL-Job中创建）、jobGroupId（appname和jobGroupId需要对应）
 
 <img height="300" src="doc/xxl-job执行器.png" width="400" style="margin-left: 100px"/>
 
-8. 修改MongoDB配置
 9. 需要提前创建XXL-Job需要的表，修改admin服务application.properties中的MySQL配置，然后启动XXL-Job中的XxlJobAdminApplication服务
 
 
