@@ -60,7 +60,7 @@ Nacos配置文件在doc目录下，将zip文件导入到Nacos
 10. 修改daijia_payment.payment_info表中的pay_way字段为int类型
 ```sql
 ALTER TABLE `daijia_payment`.`payment_info` 
-MODIFY COLUMN `pay_way` int(10) NOT NULL DEFAULT 0 COMMENT '付款方式：1-微信' AFTER `order_no`;
+MODIFY COLUMN `pay_way` int(10) NOT NULL DEFAULT 0 COMMENT '付款方式：1101-微信';
 ```
 
 
