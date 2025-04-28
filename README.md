@@ -57,11 +57,6 @@ Nacos配置文件在doc目录下，将zip文件导入到Nacos
 <img height="300" src="doc/xxl-job执行器.png" width="400" style="margin-left: 100px"/>
 
 9. 需要提前创建XXL-Job需要的表，修改admin服务application.properties中的MySQL配置，然后启动XXL-Job中的XxlJobAdminApplication服务
-10. 修改daijia_payment.payment_info表中的pay_way字段为int类型
-```sql
-ALTER TABLE `daijia_payment`.`payment_info` 
-MODIFY COLUMN `pay_way` int(10) NOT NULL DEFAULT 0 COMMENT '付款方式：1101-微信';
-```
 
 
 
