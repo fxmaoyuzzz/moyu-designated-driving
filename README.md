@@ -45,7 +45,7 @@
 #### **部署Tips**
 -----------------------------------------------------------------------------------------------
 Nacos配置文件在doc目录下，将zip文件导入到Nacos
-1. 修改MySQL配置 
+1. 修改MySQL配置
 2. 修改Redis配置 
 3. 修改RabbitMQ配置 
 4. 修改MongoDB配置
@@ -57,6 +57,7 @@ Nacos配置文件在doc目录下，将zip文件导入到Nacos
 <img height="300" src="doc/xxl-job执行器.png" width="400" style="margin-left: 100px"/>
 
 9. 需要提前创建XXL-Job需要的表，修改admin服务application.properties中的MySQL配置，然后启动XXL-Job中的XxlJobAdminApplication服务
+10. 执行doc/sql下的脚本文件创建相关数据库和表结构
 
 
 
